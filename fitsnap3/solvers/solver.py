@@ -67,6 +67,20 @@ class Solver:
         self._errors([[0, testing]], ['*ALL'], "Energy", a, b, w)
         if testing != 0:
             self._errors([[testing, 0]], ['*ALL'], "Energy_testing", a, b, w)
+        if config.sections["EXTRAS"].knn:
+            from sklearn.neighbors import NearestNeighbors
+            from csv import writer
+            numneigh = config.sections["EXTRAS"].neighbors
+            knnalgo = config.sections["EXTRAS"].knnstyle
+            knnbins = config.sections["EXTRAS"].knnbins
+            nbrs = NearestNeighbors(n_neighbors=numneigh, algorithm=knnalgo).fit(a)
+            distances, indices = nbrs.kneighbors(a)
+            flat_a = np.reshape(distances,(np.shape(distances)[0]*np.shape(distances)[1]))
+            dist_hist, edges_hist = np.histogram(flat_a, bins=knnbins, density=True)
+#            pt.single_print(zip(edges_hist,dist_hist))
+            with open('knn_distances.dat', 'w') as f:
+                writer = writer(f, delimiter=' ')
+                writer.writerows(zip(edges_hist, dist_hist))
 
     def _force(self):
         num_forces = np.array(pt.shared_arrays['a'].num_atoms)*3

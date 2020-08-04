@@ -47,7 +47,7 @@ pt.single_print("  / /_   / // __/\__ \ /  |/ // /| |  / /_/ /")
 pt.single_print(" / __/  / // /_ ___/ // /|  // ___ | / ____/ ")
 pt.single_print("/_/    /_/ \__//____//_/ |_//_/  |_|/_/      ")
 pt.single_print("")
-pt.single_print("-----------")
+pt.single_print("---7.29.20---")
 
 try:
     pt.single_print("Reading input...")
@@ -84,6 +84,13 @@ try:
     output.screen("pandas version: ", pd.__version__)
 except Exception as e:
     output.screen("Trouble importing pandas package, exiting...")
+    output.exception(e)
+
+try:
+    import sklearn as skl
+    output.screen("scikit-learn version: ", skl.__version__)
+except Exception as e:
+    output.screen("Trouble importing Sci-Kit Learn package, exiting...")
     output.exception(e)
 
 # try:
